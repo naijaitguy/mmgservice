@@ -17,3 +17,5 @@
 
 
 6#php artisan jwt:secret
+
+7# Post man Collection is attached .

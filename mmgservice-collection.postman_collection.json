@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "fee438ec-010b-43af-be12-07f31af3f4e6",
+		"name": "mmgservice-collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "createuser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \"name\": \"babatunde\",\n        \"email\": \"22babs1@gmail.com\",\n        \"password\": \"Password20$\"\n      \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}auth/createuser",
+							"host": [
+								"{{baseurl}}auth"
+							],
+							"path": [
+								"createuser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\"email\": \"2e1r1babs@gmail.com\",\n        \"password\": \"Password20$\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "importfile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseurl}}account/upload",
+							"host": [
+								"{{baseurl}}account"
+							],
+							"path": [
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}account/getallusers",
+							"host": [
+								"{{baseurl}}account"
+							],
+							"path": [
+								"getallusers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user by id",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "get all wallets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}account/getallwallet",
+							"host": [
+								"{{baseurl}}account"
+							],
+							"path": [
+								"getallwallet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get wallet by id",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "get counts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}account/count",
+							"host": [
+								"{{baseurl}}account"
+							],
+							"path": [
+								"count"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Money",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n     \"receiver_wallet_id\":1,\n      \"amount\": 0\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}account/sendmoney",
+							"host": [
+								"{{baseurl}}account"
+							],
+							"path": [
+								"sendmoney"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create wallet",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}account/cretaewallet",
+							"host": [
+								"{{baseurl}}account"
+							],
+							"path": [
+								"cretaewallet"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY0OTI2MjE2MCwiZXhwIjoxNjQ5MjY1NzYwLCJuYmYiOjE2NDkyNjIxNjAsImp0aSI6ImJRd1lJZnk2ODJXNXE5clQiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.SoftVqNjkjDAGoJ9Hnj8EB3l3BQFguuK5ET6eEJzv3U",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseurl",
+			"value": "localhost:8000/api/",
+			"type": "string"
+		}
+	]
+}

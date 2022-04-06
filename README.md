@@ -3,10 +3,17 @@
 
 # mmgservice
 
-# composer install
-#create database with the name mmg.dev
-#run php artisan migrate
+1# composer install
 
-#run php artisan db:seed --class=RolesSeeder
-#run php artisan db:seed --class=account_type_seeder
-#php artisan jwt:secret
+
+2#create database with the name mmg.dev
+
+
+3#run php artisan migrate
+
+4#run php artisan db:seed --class=RolesSeeder
+
+5#run php artisan db:seed --class=account_type_seeder
+
+
+6#php artisan jwt:secret

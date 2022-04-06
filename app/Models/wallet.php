@@ -9,6 +9,16 @@ class wallet extends Model
 {
     use HasFactory;
 
+    
+    protected $fillable = [
+        'name',
+        'mini_balance',
+        'balance',
+        'interest_rate',
+        'wallettype_id',
+        'user_id'
+
+    ];
 
     public function user(){
         return $this->belongsTo(User::class);
@@ -24,6 +34,6 @@ class wallet extends Model
 
 
         return $this->hasMany(transrecord::class);
-        
+
     }
 }

@@ -30,27 +30,29 @@ class AuthController extends Controller
         //
 
 
-      $user = User::all()->where('name',$name)->first();
-      if( $user !==null){
+        $user = User::all()->where('name', $name)->first();
+        if ($user !== null) {
 
-       return response()->json([
-        'success'=>true,
-        'userexist'=>true,
-        'callregister'=>false,
-        'data'=>$user]
-      , 200);
-
-      }
-     else{
-        return response()->json([
-        'success'=>true,
-        'userexist'=>false,
-        'callregister'=>true,
-        'message'=> 'User Not Found']
-       , 200);
-
-     }
-
+            return response()->json(
+                [
+                    'success' => true,
+                    'userexist' => true,
+                    'callregister' => false,
+                    'data' => $user
+                ],
+                200
+            );
+        } else {
+            return response()->json(
+                [
+                    'success' => true,
+                    'userexist' => false,
+                    'callregister' => true,
+                    'message' => 'User Not Found'
+                ],
+                200
+            );
+        }
     }
 
     public function FindEmail($email)
@@ -58,27 +60,29 @@ class AuthController extends Controller
         //
 
 
-      $user = User::all()->where('email',$email)->first();
-      if( $user !==null){
+        $user = User::all()->where('email', $email)->first();
+        if ($user !== null) {
 
-       return response()->json([
-        'success'=>true,
-        'userexist'=>true,
-        'callusername'=>false,
-        'data'=>$user]
-      , 200);
-
-      }
-     else{
-        return response()->json([
-        'success'=>true,
-        'userexist'=>false,
-        'callusername'=>true,
-        'message'=> 'User Not Found']
-       , 200);
-
-     }
-
+            return response()->json(
+                [
+                    'success' => true,
+                    'userexist' => true,
+                    'callusername' => false,
+                    'data' => $user
+                ],
+                200
+            );
+        } else {
+            return response()->json(
+                [
+                    'success' => true,
+                    'userexist' => false,
+                    'callusername' => true,
+                    'message' => 'User Not Found'
+                ],
+                200
+            );
+        }
     }
 
 
@@ -87,57 +91,54 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
- public function   login(Request $request){
+    public function   login(Request $request)
+    {
 
-    $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
-    $validator = Validator::make($request->all(), [
-        'email' => 'required|email',
-        'password' => 'required|string',
-    ]);
-    if ($validator->fails()) {
-        return response()->json($validator->errors(), 422);
-    }
-    try{
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        try {
 
-        if (!$jwt_token = JWTAuth::attempt($credentials)) {
+            if (!$jwt_token = JWTAuth::attempt($credentials)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid Email or Password',
+                ], 400);
+            }
+
+
+            $role =  auth()->user()->role;
+
+            //   if (auth()->user()->role_id != 3) {
+            //   return response()->json([
+            //      'success' => false,
+            //       'message' => 'Unathorize Access ',
+            //  ], 401);
+            // }
+
+
+
+        } catch (JWTException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid Email or Password',
-            ], 400);
+                'message' => 'could_not_create_token'
+            ], 500);
         }
 
-
-        $role =  auth()->user()->role;
-
-     //   if (auth()->user()->role_id != 3) {
-         //   return response()->json([
-          //      'success' => false,
-         //       'message' => 'Unathorize Access ',
-          //  ], 401);
-       // }
-
-
-
+        return response()->json([
+            //  'profile'=> auth()->user(),
+            'success' => true,
+            'message' => 'login Successful',
+            'token' => $jwt_token,
+            'role' => $role->role,
+        ], 200);
     }
-    catch(JWTException $e)
-    {
-          return response()->json([
-            'success' => false,
-              'message' => 'could_not_create_token'
-            ], 500);
-
-    }
-
-    return response()->json([
-      //  'profile'=> auth()->user(),
-        'success' => true,
-        'message' => 'login Successful',
-        'token' => $jwt_token,
-        'role'=>$role->role,
-    ], 200);
-
- }
 
 
 
@@ -147,13 +148,15 @@ class AuthController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function GetRoles(){
+    public function GetRoles()
+    {
 
-         $Roles = role::all();
+        $Roles = role::all();
 
-         return $Roles;
-     }
-     public function createuser (Request $request){
+        return $Roles;
+    }
+    public function createuser(Request $request)
+    {
         $credentials = $request->only('email', 'password');
 
         $validator = Validator::make($request->all(), [
@@ -162,54 +165,54 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
         if ($validator->fails()) {
-            return response()->json([
-                'success'=>false,
-                'message'=> $validator->errors()]
-            , 400);
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()
+                ],
+                400
+            );
         }
-      if( $role = role::all()->where('role','user')->first())
-      {
-       $role_id = $role->id;
+        if ($role = role::all()->where('role', 'user')->first()) {
+            $role_id = $role->id;
 
-               $user = User::create([
-            'role_id'=>$role_id,
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-        ]);
+            $user = User::create([
+                'role_id' => $role_id,
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'password' => Hash::make($request->get('password')),
+            ]);
         }
-       if($user){ $token = JWTAuth::fromUser($user);
-
-        $user_id  = $user->id;
-
-
+        if ($user) {
+            $token = JWTAuth::fromUser($user);
 
             return response()->json([
-            'success' => true,
-            'message' => 'Registration Successful',
-            'token' => $token,
-            'role'=>$role->role,
-            'data'=> $user
-        ],201);
+                'success' => true,
+                'message' => 'Registration Successful',
+                'token' => $token,
+                'role' => $role->role,
+                'data' => $user
+            ], 201);
+        } else {
 
+            return response()->json([
+                'success' => false,
+                'message' => 'Internal Server Error ',
 
-    }else{
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Internal Server Error ',
-
-        ],500);
+            ], 500);
+        }
     }
-
-    }
-    public function Logout() {
+    public function Logout()
+    {
         auth()->logout();
         return response()->json(
-            ['message' => 'User successfully signed out'],200);
+            ['message' => 'User successfully signed out'],
+            200
+        );
     }
 
-    protected function createNewToken($token){
+    protected function createNewToken($token)
+    {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
@@ -217,16 +220,17 @@ class AuthController extends Controller
             'user' => auth()->user()
         ]);
     }
-///
+    ///
 
-///get auth user by token
+    ///get auth user by token
     public function getAuthUser()
     {
 
         $user = JWTAuth::parseToken()->authenticate();
 
-            return response()->json([
-                'data' => $user,
-                "error"=>false],200);
-        }
+        return response()->json([
+            'data' => $user,
+            "error" => false
+        ], 200);
+    }
 }
